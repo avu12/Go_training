@@ -2,12 +2,20 @@ package calculator
 
 import (
 	"testing"
+
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/mock"
 )
 
-type DiscountRepositoryMock struct{}
+type DiscountRepositoryMock struct {
+	mock.Mock
+}
 
 func (drm DiscountRepositoryMock) FindCurrentDiscount() int {
-	return 20
+
+	args := drm.Called()
+
+	return args.Int(0)
 }
 
 func TestDiscountCalculator(t *testing.T) {
@@ -20,25 +28,27 @@ func TestDiscountCalculator(t *testing.T) {
 		expectedAmount        int
 	}
 	testCases := []testCase{
-		{name: "Should apply 20", minimumPurchaseAmount: 100, purchaseAmount: 150, expectedAmount: 130},
-		{name: "Should apply 40", minimumPurchaseAmount: 100, purchaseAmount: 200, expectedAmount: 160},
-		{name: "Should apply 60", minimumPurchaseAmount: 100, purchaseAmount: 350, expectedAmount: 290},
-		{name: "Should not apply", minimumPurchaseAmount: 100, purchaseAmount: 50, expectedAmount: 50},
+		{name: "Should apply 20", minimumPurchaseAmount: 100, purchaseAmount: 150, discount: 20, expectedAmount: 130},
+		{name: "Should apply 40", minimumPurchaseAmount: 100, purchaseAmount: 200, discount: 20, expectedAmount: 160},
+		{name: "Should apply 60", minimumPurchaseAmount: 100, purchaseAmount: 350, discount: 20, expectedAmount: 290},
+		{name: "Should not apply", minimumPurchaseAmount: 100, purchaseAmount: 50, discount: 20, expectedAmount: 50},
+		{name: "Should not apply when discount is zero", minimumPurchaseAmount: 100, purchaseAmount: 50, discount: 0, expectedAmount: 50},
 	}
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
 
 			discountRepositoryMock := DiscountRepositoryMock{}
+			discountRepositoryMock.On("FindCurrentDiscount").Return(tc.discount)
 			calculator, err := NewDiscountCalculator(tc.minimumPurchaseAmount, discountRepositoryMock)
 			if err != nil {
 				//FailNow + logf
 				t.Fatalf("Could not instantiate the calculator: %s", err.Error())
 			}
 			amount := calculator.Calculate(tc.purchaseAmount)
-			if tc.expectedAmount != amount {
-				t.Errorf("expected %v, got %v. Fail caused by unexpected amount number ", tc.expectedAmount, amount)
-			}
+
+			assert.Equal(t, tc.expectedAmount, amount)
+
 		})
 
 	}
