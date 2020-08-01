@@ -11,7 +11,7 @@ import (
 
 const (
 	screenWidth, screenHeigth = 640, 360
-	boidCount                 = 50
+	boidCount                 = 1000
 	viewRadius                = 13
 	adjRate                   = 0.015
 )
@@ -20,7 +20,7 @@ var (
 	green   = color.RGBA{10, 255, 50, 255}
 	boids   [boidCount]*Boid
 	boidMap [screenWidth + 1][screenHeigth + 1]int
-	lock    = sync.Mutex{}
+	rwlock  = sync.RWMutex{}
 )
 
 func update(screen *ebiten.Image) error {
