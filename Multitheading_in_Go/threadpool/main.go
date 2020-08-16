@@ -17,7 +17,7 @@ type Point2D struct {
 	y int
 }
 
-const numberOfThreads int = 2
+const numberOfThreads int = 100
 
 var (
 	r         = regexp.MustCompile(`\((\d*),(\d*)\)`)
