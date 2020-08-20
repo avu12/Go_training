@@ -6,17 +6,24 @@ import (
 	"sort"
 	"sync"
 
+	"./firstduplicationarray"
 	"./mergesortedarrays"
+	"./moreduplicatedarray"
 	"./onedoubleelementinarray"
 	"./palindrome"
 	"./scheluder"
 )
 
-var (
-	waitgroup = sync.WaitGroup{}
-)
-
 func main() {
+	arr := []int{2, 5, 5, 2, 3, 5, 1, 2, 4}
+	firstduplicationarray.FindFirstDuplicate(arr)
+}
+
+func Exercises() {
+
+	var (
+		waitgroup = sync.WaitGroup{}
+	)
 
 	if false {
 		fmt.Println(palindrome.IsPalindrome("racecar"))
@@ -42,7 +49,13 @@ func main() {
 
 		mergesortedarrays.MergesortedArrays(arr1, arr2)
 	}
+	if false {
+		onedoubleelementinarray.CalculateDoubleElement(90)
+	}
 
-	onedoubleelementinarray.CalculateDoubleElement(90)
+	if false {
+		arr := []int{2, 3, 1, 0, 2}
+		fmt.Println(moreduplicatedarray.Findaduplicate(arr))
+	}
 
 }
