@@ -12,11 +12,13 @@ import (
 	"./onedoubleelementinarray"
 	"./palindrome"
 	"./scheluder"
+	"./sortedmatrix"
 )
 
 func main() {
-	arr := []int{2, 5, 5, 2, 3, 5, 1, 2, 4}
-	firstduplicationarray.FindFirstDuplicate(arr)
+
+	matr := [][]int{{1, 3, 5}, {7, 9, 11}, {13, 15, 23}}
+	sortedmatrix.IsInSortedMatrix(matr, 70)
 }
 
 func Exercises() {
@@ -56,6 +58,11 @@ func Exercises() {
 	if false {
 		arr := []int{2, 3, 1, 0, 2}
 		fmt.Println(moreduplicatedarray.Findaduplicate(arr))
+	}
+
+	if false {
+		arr := []int{2, 5, 5, 2, 3, 5, 1, 2, 4}
+		firstduplicationarray.FindFirstDuplicate(arr)
 	}
 
 }

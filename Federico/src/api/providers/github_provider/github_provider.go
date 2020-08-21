@@ -29,6 +29,7 @@ func CreateRepo(accessToken string, request github.CreateRepoRequest) (*github.C
 	response, err := restclient.Post(urlCreateRepo, request, headers)
 	if err != nil {
 		log.Println(fmt.Sprintf("error when trying to create new repo in github: %s", err.Error()))
+
 		return nil, &github.GithubErrorResponse{StatusCode: http.StatusInternalServerError, Message: err.Error()}
 	}
 	bytes, err := ioutil.ReadAll(response.Body)
@@ -40,7 +41,6 @@ func CreateRepo(accessToken string, request github.CreateRepoRequest) (*github.C
 	}
 
 	defer response.Body.Close()
-
 	if response.StatusCode > 299 {
 		var errResponse github.GithubErrorResponse
 		err := json.Unmarshal(bytes, &errResponse)
